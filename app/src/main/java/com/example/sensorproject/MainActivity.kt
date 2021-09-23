@@ -10,11 +10,20 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.sensorproject.fragments.WalkFragment
+import com.example.sensorproject.fragments.MapFragment
+import com.example.sensorproject.fragments.SavedFragment
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
+
+    private val walkFragment = WalkFragment()
+    private val mapFragment = MapFragment()
+    private val savedFragment = SavedFragment()
 
     private lateinit var sm: SensorManager
     private var sSteps: Sensor? = null
@@ -24,10 +33,30 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
        hasPermissions()
 
-        sm = getSystemService(Context.SENSOR_SERVICE) as
+        sm = getSystemService(SENSOR_SERVICE) as
                 SensorManager
 
         sSteps = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        replaceFragment(walkFragment)
+
+        bottomBar.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.map -> replaceFragment(mapFragment)
+                R.id.saved -> replaceFragment(savedFragment)
+                R.id.walk -> replaceFragment(walkFragment)
+            }
+            true
+        }
+
+    }
+
+    private fun replaceFragment(fragment: Fragment){
+        if (fragment != null){
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, fragment)
+            transaction.commit()
+        }
     }
 
     private fun hasPermissions(): Boolean {
