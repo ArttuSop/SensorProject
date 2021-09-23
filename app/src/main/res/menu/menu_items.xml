@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/walk"
+        android:icon="@drawable/ic_walk"
+        android:title="search"/>
+    <item android:id="@+id/map"
+        android:icon="@drawable/ic_map"
+        android:title="map"/>
+    <item android:id="@+id/saved"
+        android:icon="@drawable/ic_save"
+        android:title="saved trips"/>
+
+</menu>
