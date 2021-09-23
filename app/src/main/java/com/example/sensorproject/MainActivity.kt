@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private val walkFragment = WalkFragment()
-    private val mapFragment = MapFragment()
+    private val mapsFragment = MapsFragment()
     private val savedFragment = SavedFragment()
 
     private lateinit var sm: SensorManager
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         bottomBar.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.map -> replaceFragment(mapFragment)
+                R.id.map -> replaceFragment(mapsFragment)
                 R.id.saved -> replaceFragment(savedFragment)
                 R.id.walk -> replaceFragment(walkFragment)
             }
