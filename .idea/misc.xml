@@ -8,9 +8,10 @@
         <entry key="..\:/SensorProject/app/src/main/res/drawable/ic_save.xml" value="0.290625" />
         <entry key="..\:/SensorProject/app/src/main/res/drawable/ic_walk.xml" value="0.290625" />
         <entry key="..\:/SensorProject/app/src/main/res/drawable/item_selector.xml" value="0.290625" />
-        <entry key="..\:/SensorProject/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/SensorProject/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_map.xml" value="0.1793478260869565" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_maps.xml" value="0.2" />
+        <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_maps2.xml" value="0.14010416666666667" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_saved.xml" value="0.1793478260869565" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_walk.xml" value="0.1793478260869565" />
         <entry key="..\:/SensorProject/app/src/main/res/menu/menu_items.xml" value="0.27447916666666666" />
