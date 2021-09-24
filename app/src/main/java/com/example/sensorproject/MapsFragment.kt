@@ -30,6 +30,16 @@ class MapsFragment : Fragment() {
         googleMap.addMarker(MarkerOptions().position(karaportti).title("Marker in Karaportti"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(karaportti))
     }
+    /*
+    fun getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+     */
 
     override fun onCreateView(
         inflater: LayoutInflater,
