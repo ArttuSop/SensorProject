@@ -5,4 +5,5 @@
     <string name="location_permission_denied">Denied</string>
     <string name="permission_required_toast">Test</string>
     <string name="permission_rationale_location">Testing</string>
+    <string name="read_file_failed" />
 </resources>
