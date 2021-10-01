@@ -7,7 +7,6 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
 
@@ -15,16 +14,16 @@ import androidx.fragment.app.DialogFragment
 object PermissionUtils {
 
     fun requestPermission(
-        activity: AppCompatActivity, requestId: Int,
+        activity: MapsFragment, requestId: Int,
         permission: String, finishActivity: Boolean
     ) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity.requireActivity(), permission)) {
             // Display a dialog with rationale.
             RationaleDialog.newInstance(requestId, finishActivity)
-                .show(activity.supportFragmentManager, "dialog")
+                .show(activity.childFragmentManager, "dialog")
         } else {
             // Location permission has not been granted yet, request it.
-            ActivityCompat.requestPermissions(activity, arrayOf(permission), requestId)
+            ActivityCompat.requestPermissions(activity.requireActivity(), arrayOf(permission), requestId)
         }
     }
 
