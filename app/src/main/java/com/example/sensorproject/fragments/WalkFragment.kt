@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.example.sensorproject.MainActivity
 import com.example.sensorproject.R
 import kotlinx.android.synthetic.main.fragment_walk.*
+import java.lang.String.format
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -79,6 +80,9 @@ class WalkFragment : Fragment(), SensorEventListener {
         val stepVal = p0?.values?.get(0)
         val stepsI = stepVal?.toInt()
         steps.text = stepsI.toString()
+        val kilometerInt = (stepsI?.times(0.0007))
+        kilometers.text = String.format("%.2f",kilometerInt) + " km"
+
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {

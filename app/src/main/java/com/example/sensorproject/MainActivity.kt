@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.sensorproject.fragments.WalkFragment
-import com.example.sensorproject.fragments.MapFragment
 import com.example.sensorproject.fragments.SavedFragment
 import android.view.View
 import android.widget.Toast
