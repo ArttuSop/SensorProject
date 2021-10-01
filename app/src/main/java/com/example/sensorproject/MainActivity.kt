@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), /*OnMapReadyCallback,*/
         }
         return true
     }
-    
+
     override fun onButtonClick(position: Int) {
 
     }
