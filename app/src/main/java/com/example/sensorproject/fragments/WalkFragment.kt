@@ -23,7 +23,6 @@ import androidx.fragment.app.DialogFragment
 import com.example.sensorproject.DayStatsDB
 import com.example.sensorproject.DayStatsEntity
 import com.example.sensorproject.R
-import com.example.sensorproject.RouteDB
 import kotlinx.android.synthetic.main.fragment_walk.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -137,7 +136,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
             putExtra(Formatted, viewFormattedDate)
         }
         GlobalScope.launch {
-            db.dayStatsDao().insert(DayStatsEntity(0, "13.10.2021", "1000", "6km"))
+            db.dayStatsDao().insert(DayStatsEntity(0, "13.10.2021", "1000", "6"))
         }
         startActivity(intent)
     }
