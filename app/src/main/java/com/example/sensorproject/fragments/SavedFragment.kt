@@ -37,7 +37,7 @@ class SavedFragment : Fragment(R.layout.fragment_saved) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
         val ump: RouteModel by viewModels()
-        ump.getUsers().observe(this) {
+        ump.getRoutes().observe(this) {
             recyclerView.adapter = RouteAdapter(it?.sortedBy { that ->
                 that.uid})
         }

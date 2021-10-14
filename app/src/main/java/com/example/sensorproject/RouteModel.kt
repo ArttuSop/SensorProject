@@ -10,5 +10,5 @@ class RouteModel(application: Application):
     private val routes: LiveData<List<RouteEntity>> =
         RouteDB.get(getApplication()).routeDao().getAll()
 
-    fun getUsers() = routes
+    fun getRoutes() = routes
 }

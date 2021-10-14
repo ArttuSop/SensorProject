@@ -42,6 +42,9 @@
             android:name=".SingleRoute"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".fragments.dayFragment"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
