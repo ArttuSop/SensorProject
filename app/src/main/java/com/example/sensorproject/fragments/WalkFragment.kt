@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
 import com.example.sensorproject.MainActivity
+import com.example.sensorproject.MapsFragment
 import com.example.sensorproject.R
 import kotlinx.android.synthetic.main.fragment_walk.*
 import java.lang.String.format
@@ -56,25 +57,8 @@ class WalkFragment : Fragment(), SensorEventListener {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WalkFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WalkFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 
+    }
 
     override fun onSensorChanged(p0: SensorEvent?) {
         val stepVal = p0?.values?.get(0)
@@ -82,6 +66,7 @@ class WalkFragment : Fragment(), SensorEventListener {
         steps.text = stepsI.toString()
         val kilometerInt = (stepsI?.times(0.0007))
         kilometers.text = String.format("%.2f",kilometerInt) + " km"
+
 
     }
 

@@ -6,4 +6,10 @@
     <string name="permission_required_toast">Test</string>
     <string name="permission_rationale_location">Testing</string>
     <string name="read_file_failed" />
+    <string name="mapFragment">mapFragment</string>
+    <string name="steps">Steps: %1$s</string>
+    <string name="kilometers">Kilometers: %1$s</string>
+    <string name="speed">Speed: %1$s kph</string>
+    <string name="minutes">Minutes: %1$s</string>
+    <string name="hours">Hours: %1$s</string>
 </resources>

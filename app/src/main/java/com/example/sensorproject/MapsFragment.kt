@@ -4,27 +4,43 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.sensorproject.PermissionUtils.requestPermission
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import com.google.android.gms.maps.SupportMapFragment
+import java.text.SimpleDateFormat
+import java.util.*
 
-internal const val FILENAME = "Polyline"
+import android.widget.TextView
+import com.example.sensorproject.fragments.WalkFragment
+import kotlinx.android.synthetic.main.fragment_walk.*
+import kotlinx.android.synthetic.main.fragment_walk.view.*
+
+
 class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
-    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationChangeListener {
+    GoogleMap.OnMyLocationClickListener, OnMapReadyCallback, GoogleMap.OnMyLocationChangeListener,
+    SensorEventListener {
 
     private lateinit var map: GoogleMap
     var lat = 0.0
@@ -32,7 +48,21 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     private lateinit var bt: Button
     private lateinit var polyline: Polyline
     var start = false
+    var polylineList = emptyList<Coordinate>()
+    var encodedPolyline = ""
+    var stepsRoute = 0
+    var kilometersS = ""
+    var kilometersDouble = 0.0
+    var seconds = 0
+    var stepsWalk = 0
+    var kilometersWalk = 0.0
+    var running = false
+    var myLocation = false
+    var getCurrentSteps = false
+    private var sSteps: Sensor? = null
+    private lateinit var sm: SensorManager
     private var permissionDenied = false
+    private val db by lazy { RouteDB.get(this.requireContext()) }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,18 +82,100 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         //You can add LayoutParams to put the button where you want it and the just add it
         rl.addView(bt, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+        sm = (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager)
+
+        sSteps = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
         bt.setOnClickListener {
             if (bt.text == "Start") {
                 start = true
-                bt.setText("Stop")
+                running = true
+                getCurrentSteps = true
+                runTimer()
+                bt.text = "Stop"
             } else if (bt.text == "Stop") {
                 start = false
-                bt.setText("Start")
+                running = false
+                bt.text = "Start"
+                Log.d("Seconds in stop", seconds.toString())
+                encodedPolyline = encode(polylineList)
+                val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+                val currentDateTime = simpleDateFormat.format(Date())
+                val hours = seconds.toDouble() / 3600
+                Log.d("Hours in stop", hours.toString())
+                Log.d("StepsWalk", stepsWalk.toString())
+                Log.d("KilometersWalk", kilometersWalk.toString())
+                stepsRoute -= stepsWalk
+                kilometersDouble -= kilometersWalk
+                val avgSpeed = kilometersDouble / hours
+                kilometersS = String.format("%.2f",kilometersDouble) + " km"
+                GlobalScope.launch {
+                    db.routeDao().insert(RouteEntity(0, currentDateTime, kilometersS, encodedPolyline, avgSpeed.toString(), stepsRoute.toString(), hours.toString()))
+                    //RoutesModel.db = db
+                }
+                map.clear()
             }
         }
-
         return rootView
         //return inflater.inflate(R.layout.fragment_maps, container, false)
+    }
+
+    private fun runTimer() {
+
+        // Creates a new Handler
+        val handler = Handler()
+
+        handler.post(object : Runnable {
+            override fun run() {
+                val hours: Int = seconds / 3600
+                val minutes: Int = seconds % 3600 / 60
+                val secs: Int = seconds % 60
+
+                // If running is true, increment the
+                // seconds variable.
+                if (running) {
+                    seconds++
+                    Log.d("Seconds", seconds.toString())
+                }
+
+                // Post the code again
+                // with a delay of 1 second.
+                handler.postDelayed(this, 1000)
+            }
+        })
+    }
+
+    override fun onSensorChanged(p0: SensorEvent?) {
+        if (getCurrentSteps) {
+            stepsWalk = p0?.values?.get(0)?.toInt()!!
+            kilometersWalk = p0.values?.get(0)?.toInt()!!.times(0.0007)
+            getCurrentSteps = false
+        }
+        Log.d("Steps", stepsRoute.toString())
+        Log.d("Kilometers", kilometersDouble.toString())
+        val stepVal = p0?.values?.get(0)
+        val stepsI = stepVal?.toInt()
+        if (stepsI != null) {
+            stepsRoute = stepsI
+        }
+        kilometersDouble = (stepsI?.times(0.0007)!!)
+
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        println("Accuracy changed")
+    }
+
+    override fun onResume() {
+        // Register a listener for the sensor.
+        super.onResume()
+        sm.registerListener(this, sSteps, SensorManager.SENSOR_DELAY_NORMAL)
+    }
+
+    override fun onPause() {
+        // Be sure to unregister the sensor when the activity pauses.
+        super.onPause()
+        sm.unregisterListener(this)
     }
 
     @SuppressLint("MissingPermission")
@@ -71,8 +183,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-
-
     }
 
     override fun onMyLocationButtonClick(): Boolean {
@@ -91,6 +201,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap ?: return
         polyline = map.addPolyline(PolylineOptions().add(LatLng(0.0, 0.0))) ?: return
+        myLocation = true
         enableMyLocation()
         map.isMyLocationEnabled = true
         map.setOnMyLocationButtonClickListener(this)
@@ -135,7 +246,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
 
 
-    override fun onResume() {
+   /* override fun onResume() {
         super.onResume()
         if (permissionDenied) {
             // Permission was not granted, display error dialog.
@@ -144,18 +255,31 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         }
     }
 
+    */
+/*
+    override fun onDestroyView() {
+        super.onDestroyView()
+        val f = fragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
+        if (f != null) requireFragmentManager().beginTransaction().remove(f).commit()
+    }
+
+ */
+
     private fun showMissingPermissionError() {
       PermissionUtils.PermissionDeniedDialog.newInstance(true).show(childFragmentManager, "dialog")
     }
 
     companion object {
-
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
     }
 
     override fun onMyLocationChange(location: Location) {
         Log.d("LocationChanging", location.longitude.toString())
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 16f))
+        if (myLocation == true) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 12f))
+            myLocation = false
+        }
+
         if (start == true) {
             if (lat == 0.0 && lng == 0.0) {
                 lat = location.latitude
@@ -167,18 +291,13 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                         LatLng(location.latitude, location.longitude)
                     )
                 )
+                polylineList = polylineList + Coordinate(lat, lng) + Coordinate(location.latitude, location.longitude)
+                Log.d("polylineList", polylineList.toString())
                 lat = location.latitude
                 lng = location.longitude
-            }
-        } else if (start == false) {
-            context?.openFileOutput(FILENAME, Context.MODE_APPEND).use {
-                it?.write("${polyline}\n".toByteArray())
-                Log.d("Polyline", polyline.toString())
-                map.clear()
+
             }
         }
-
-
     }
 
 }
