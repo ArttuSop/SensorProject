@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
+const val Formatted = "formatted"
 
 class WalkFragment : Fragment(), SensorEventListener, DateSelected {
 
@@ -130,14 +132,19 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.YEAR, year)
 
-        val viewFormatter = SimpleDateFormat("ddMMyyyy")
+        val viewFormatter = SimpleDateFormat("dd.MM.yyyy")
         var viewFormattedDate = viewFormatter.format(calendar.getTime())
         dateTv.setText(viewFormattedDate)
 
-        replaceFragment(dayFragment)
+        val intent = Intent(this.requireContext(), dayFragment::class.java).apply {
+            putExtra(Formatted, viewFormattedDate)
+        }
+
+        startActivity(intent)
 
     }
-}
+
+    }
 
 interface DateSelected {
     fun receiveDate(year: Int, month: Int, dayOfMonth: Int)

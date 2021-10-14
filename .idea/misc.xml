@@ -12,13 +12,9 @@
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_map.xml" value="0.1793478260869565" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_maps.xml" value="0.2" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_maps2.xml" value="0.14010416666666667" />
-        <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_maps_item.xml" value="0.152" />
-        <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_maps_single.xml" value="0.1" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_saved.xml" value="0.128" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/fragment_walk.xml" value="0.1793478260869565" />
-        <entry key="..\:/SensorProject/app/src/main/res/layout/item.xml" value="0.2" />
         <entry key="..\:/SensorProject/app/src/main/res/layout/recycler_fragment.xml" value="0.1125" />
-        <entry key="..\:/SensorProject/app/src/main/res/layout/single_route.xml" value="0.264" />
         <entry key="..\:/SensorProject/app/src/main/res/menu/menu_items.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/drawable/ic_map.xml" value="0.1" />
@@ -28,6 +24,7 @@
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/layout/fragment_maps.xml" value="0.1" />
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/layout/fragment_saved.xml" value="0.1981981981981982" />
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/layout/fragment_walk.xml" value="0.2" />
+        <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/layout/item.xml" value="0.21981981981981982" />
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/arttu/AndroidStudioProjects/SensorProject2/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
