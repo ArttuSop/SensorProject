@@ -20,6 +20,10 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
+import com.example.sensorproject.MainActivity
+import com.example.sensorproject.MapsFragment
 import com.example.sensorproject.R
 import kotlinx.android.synthetic.main.fragment_day.*
 import kotlinx.android.synthetic.main.fragment_walk.*
@@ -43,12 +47,6 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
         sm = (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager)
 
         sSteps = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
-
-
-        /*pickDateBtn.setOnClickListener{
-            showDatePicker()
-        }
-         */
     }
 
     override fun onCreateView(
@@ -70,13 +68,16 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
         val currentDateTime = simpleDateFormat.format(Date())
         dateTv.text = currentDateTime
     }
+    companion object {
+
+    }
 
     override fun onSensorChanged(p0: SensorEvent?) {
         val stepVal = p0?.values?.get(0)
         val stepsI = stepVal?.toInt()
         steps.text = stepsI.toString()
         val kilometerInt = (stepsI?.times(0.0007))
-        kilometers.text = String.format("%.2f", kilometerInt) + " km"
+        kilometers.text = String.format("%.2f",kilometerInt) + " km"
 
     }
 

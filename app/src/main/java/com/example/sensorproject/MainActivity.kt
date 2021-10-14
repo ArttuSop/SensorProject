@@ -1,30 +1,20 @@
 package com.example.sensorproject
 
 import android.Manifest
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.sensorproject.fragments.WalkFragment
 import com.example.sensorproject.fragments.SavedFragment
-import android.view.View
-import android.widget.Button
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.example.sensorproject.PermissionUtils.PermissionDeniedDialog.Companion.newInstance
-import com.example.sensorproject.PermissionUtils.isPermissionGranted
-import com.example.sensorproject.PermissionUtils.requestPermission
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), /*OnMapReadyCallback,*/
-    ActivityCompat.OnRequestPermissionsResultCallback, SavedFragment.RecyclerFragmentListener {
+    ActivityCompat.OnRequestPermissionsResultCallback /*SavedFragment.RecyclerFragmentListener*/ {
 
     private val walkFragment = WalkFragment()
     private val mapsFragment = MapsFragment()
@@ -66,10 +56,9 @@ class MainActivity : AppCompatActivity(), /*OnMapReadyCallback,*/
         }
         return true
     }
-    
-    override fun onButtonClick(position: Int) {
+    /*override fun onButtonClick(position: Int) {
 
     }
 
-
+     */
 }
