@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -70,7 +71,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     ): View? {
         val rootView: View = inflater.inflate(R.layout.fragment_maps, container, false)
         bt = Button(activity)
-
+        bt.setBackgroundColor(Color.parseColor("#1565C0"))
         //Find the layout with the id you gave in on the xml
         val rl = rootView.findViewById<View>(R.id.map) as FrameLayout
 
@@ -81,7 +82,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
         //You can add LayoutParams to put the button where you want it and the just add it
         rl.addView(bt, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
         sm = (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager)
 
         sSteps = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)

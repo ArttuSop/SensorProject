@@ -18,36 +18,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
-import com.example.sensorproject.MainActivity
-import com.example.sensorproject.MapsFragment
+import com.example.sensorproject.DayStatsDB
+import com.example.sensorproject.DayStatsEntity
 import com.example.sensorproject.R
-import kotlinx.android.synthetic.main.fragment_day.*
+import com.example.sensorproject.RouteDB
 import kotlinx.android.synthetic.main.fragment_walk.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 const val Formatted = "formatted"
+class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, DateSelected {
 
-class WalkFragment : Fragment(), SensorEventListener, DateSelected {
-
-
+    private val db by lazy { DayStatsDB.get(this.requireContext()) }
     private var sSteps: Sensor? = null
     private lateinit var sm: SensorManager
-
+    var currentSteps = 0
     private val dayFragment = dayFragment()
-
+    var simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+    var currentDateTime = ""
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         sm = (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager)
-
         sSteps = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
     }
 
@@ -66,8 +63,8 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
     }
 
     fun getDate() {
-        val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
-        val currentDateTime = simpleDateFormat.format(Date())
+        //val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+        currentDateTime = simpleDateFormat.format(Date())
         dateTv.text = currentDateTime
     }
     companion object {
@@ -75,8 +72,13 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
+
+        if (currentDateTime != simpleDateFormat.format(Date())) {
+            //currentSteps = p0?.values?.get(0)?.toInt()!!
+            //reset = false
+        }
         val stepVal = p0?.values?.get(0)
-        val stepsI = stepVal?.toInt()
+        val stepsI = stepVal?.toInt()?.minus(currentSteps)
         steps.text = stepsI.toString()
         val kilometerInt = (stepsI?.times(0.0007))
         kilometers.text = String.format("%.2f",kilometerInt) + " km"
@@ -95,6 +97,7 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
         btnDatePlanted.setOnClickListener {
             showDatePicker()
         }
+
     }
 
     override fun onPause() {
@@ -119,13 +122,7 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
 
         }
     }
-    fun replaceFragment(fragment: Fragment){
-        if (fragment != null){
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.fragment_container, fragment)
-            transaction?.commit()
-        }
-    }
+
     override fun receiveDate(year: Int, month: Int, dayOfMonth: Int) {
         val calendar = GregorianCalendar()
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -139,12 +136,12 @@ class WalkFragment : Fragment(), SensorEventListener, DateSelected {
         val intent = Intent(this.requireContext(), dayFragment::class.java).apply {
             putExtra(Formatted, viewFormattedDate)
         }
-
+        GlobalScope.launch {
+            db.dayStatsDao().insert(DayStatsEntity(0, "13.10.2021", "1000", "6km"))
+        }
         startActivity(intent)
-
     }
-
-    }
+}
 
 interface DateSelected {
     fun receiveDate(year: Int, month: Int, dayOfMonth: Int)

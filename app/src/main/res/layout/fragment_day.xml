@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="#90CAF9"
     tools:context=".fragments.dayFragment">
 
     <TextView
@@ -12,7 +12,6 @@
         android:layout_width="240dp"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
-        android:text="28.10.2021"
         android:textAlignment="center"
         android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +24,6 @@
         android:layout_width="240dp"
         android:layout_height="85dp"
         android:layout_marginTop="25dp"
-        android:text="2.0km"
         android:textAlignment="center"
         android:textSize="60dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +35,6 @@
         android:layout_width="240dp"
         android:layout_height="85dp"
         android:layout_marginTop="25dp"
-        android:text="458cal"
         android:textAlignment="center"
         android:textSize="60dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +58,6 @@
         android:layout_width="240dp"
         android:layout_height="85dp"
         android:layout_marginTop="25dp"
-        android:text="2400"
         android:textAlignment="center"
         android:textSize="60dp"
         app:layout_constraintEnd_toEndOf="parent"
