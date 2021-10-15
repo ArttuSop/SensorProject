@@ -26,17 +26,14 @@ import com.example.sensorproject.R
 import kotlinx.android.synthetic.main.fragment_walk.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.concurrent.schedule
 
 const val Formatted = "formatted"
 internal const val PrevDate = "date.txt"
 internal const val PrevSteps = "steps.txt"
 internal const val CheckIfEmpty = "check.txt"
+
 class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, DateSelected {
 
     private val db by lazy { DayStatsDB.get(this.requireContext()) }
@@ -48,6 +45,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
     private val dayFragment = dayFragment()
     var simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
     var currentDateTime = ""
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +72,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         currentDateTime = simpleDateFormat.format(Date())
         dateTv.text = currentDateTime
     }
+
     companion object {
 
     }
@@ -90,7 +89,8 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
             }
 
             if (prevSteps.lines().size > 1) {
-                val steps = p0?.values?.get(0)?.toDouble()?.toInt()!! - prevSteps.lines().get(prevSteps.lines().lastIndex.minus(1)).toDouble().toInt()
+                val steps = p0?.values?.get(0)?.toDouble()?.toInt()!! - prevSteps.lines()
+                    .get(prevSteps.lines().lastIndex.minus(1)).toDouble().toInt()
                 val kilometerInt = steps.times(0.0007)
                 GlobalScope.launch {
                     db.dayStatsDao().insert(
@@ -102,7 +102,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
                         )
                     )
                 }
-            }else {
+            } else {
                 val kilometerInt = p0?.values?.get(0)?.times(0.0007)
                 GlobalScope.launch {
                     db.dayStatsDao().insert(
@@ -130,14 +130,14 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
             steps.text = stepsI.toString()
             val kilometerInt = (stepsI?.times(0.0007))
             kilometers.text = String.format("%.2f", kilometerInt) + " km"
-        }else if (prevSteps.lines().size > 1){
+        } else if (prevSteps.lines().size > 1) {
             val i = prevSteps.lines().lastIndex.minus(1)
             val stepVal = p0?.values?.get(0)
             val stepsI = stepVal?.toInt()?.minus(prevSteps.lines().get(i).toDouble().toInt())
             steps.text = stepsI.toString()
             val kilometerInt = (stepsI?.times(0.0007))
             kilometers.text = String.format("%.2f", kilometerInt) + " km"
-        }else {
+        } else {
             val prevSteps2 = requireContext().openFileInput(PrevSteps)?.bufferedReader().use {
                 it?.readText() ?: getString(R.string.read_file_steps)
             }
@@ -170,11 +170,11 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         requireContext().openFileOutput(PrevSteps, Context.MODE_APPEND).use {
 
         }
-            currentDate = requireContext().openFileInput(PrevDate)?.bufferedReader().use {
-                it?.readText() ?: getString(R.string.read_file_date)
-            }
+        currentDate = requireContext().openFileInput(PrevDate)?.bufferedReader().use {
+            it?.readText() ?: getString(R.string.read_file_date)
+        }
 
-            dateI = currentDate.lines().lastIndex.minus(1)
+        dateI = currentDate.lines().lastIndex.minus(1)
 
         if (dateI == -1) {
             requireContext().openFileOutput(PrevDate, Context.MODE_APPEND).use {
@@ -201,7 +201,8 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         sm.unregisterListener(this)
     }
 
-    class DatePickerFragment(val dateSelected : DateSelected) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+    class DatePickerFragment(val dateSelected: DateSelected) : DialogFragment(),
+        DatePickerDialog.OnDateSetListener {
         @SuppressLint("UseRequireInsteadOfGet")
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val calendar = Calendar.getInstance()

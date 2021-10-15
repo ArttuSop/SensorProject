@@ -8,10 +8,8 @@ import kotlinx.android.synthetic.main.item.view.*
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
 

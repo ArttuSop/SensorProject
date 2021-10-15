@@ -21,8 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.sensorproject.PermissionUtils.requestPermission
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -33,12 +31,7 @@ import kotlinx.coroutines.launch
 import com.google.android.gms.maps.SupportMapFragment
 import java.text.SimpleDateFormat
 import java.util.*
-
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.example.sensorproject.fragments.WalkFragment
-import kotlinx.android.synthetic.main.fragment_walk.*
-import kotlinx.android.synthetic.main.fragment_walk.view.*
 
 
 class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
@@ -114,18 +107,15 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 kilometersS = String.format("%.2f",kilometersDouble) + " km"
                 GlobalScope.launch {
                     db.routeDao().insert(RouteEntity(0, currentDateTime, kilometersS, encodedPolyline, avgSpeed.toString(), stepsRoute.toString(), hours.toString()))
-                    //RoutesModel.db = db
                 }
                 map.clear()
             }
         }
         return rootView
-        //return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     private fun runTimer() {
 
-        // Creates a new Handler
         val handler = Handler()
 
         handler.post(object : Runnable {
@@ -134,15 +124,11 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 val minutes: Int = seconds % 3600 / 60
                 val secs: Int = seconds % 60
 
-                // If running is true, increment the
-                // seconds variable.
                 if (running) {
                     seconds++
                     Log.d("Seconds", seconds.toString())
                 }
 
-                // Post the code again
-                // with a delay of 1 second.
                 handler.postDelayed(this, 1000)
             }
         })
@@ -246,28 +232,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             permissionDenied = true
         }
     }
-
-
-
-   /* override fun onResume() {
-        super.onResume()
-        if (permissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError()
-            permissionDenied = false
-        }
-    }
-
-    */
-/*
-    override fun onDestroyView() {
-        super.onDestroyView()
-        val f = fragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
-        if (f != null) requireFragmentManager().beginTransaction().remove(f).commit()
-    }
-
- */
-
     private fun showMissingPermissionError() {
       PermissionUtils.PermissionDeniedDialog.newInstance(true).show(childFragmentManager, "dialog")
     }

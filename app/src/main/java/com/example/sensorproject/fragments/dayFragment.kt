@@ -25,8 +25,8 @@ class dayFragment : AppCompatActivity() {
                 if (it[i].date.toString() == formattedDate) {
                     step.text = it[i].steps
                     km.text = it[i].kilometers
-                    var moi = it[i].kilometers!!.toInt().times(50)
-                    cal.text = moi.toString()
+                    var calo = it[i].kilometers!!.toInt().times(50)
+                    cal.text = calo.toString()
                 }
         }
         }
