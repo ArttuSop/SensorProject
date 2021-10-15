@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#90CAF9"
-    tools:context=".fragments.dayFragment">
+    tools:context=".fragments.DayFragment">
 
     <TextView
         android:id="@+id/dayDate"
@@ -50,7 +50,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/oswald"
-        android:text="Kilometers"
+        android:text="@string/dayKilometers"
         android:textAlignment="center"
         android:textSize="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/oswald"
-        android:text="Steps"
+        android:text="@string/daySteps"
         android:textAlignment="center"
         android:textSize="35dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/oswald"
-        android:text="Calories"
+        android:text="@string/dayCalories"
         android:textAlignment="center"
         android:textSize="35dp"
         app:layout_constraintEnd_toEndOf="parent"

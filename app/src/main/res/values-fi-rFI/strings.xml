@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StepByStep</string>
+    <string name="location_permission_denied">Estetty</string>
+    <string name="permission_required_toast">Testi</string>
+    <string name="permission_rationale_location">Testataan</string>
+    <string name="mapFragment">karttaFramentti</string>
+    <string name="steps">Askeleet: %1$s</string>
+    <string name="kilometers">Kilometrit: %1$s</string>
+    <string name="speed">Nopeus: %1$s km/h</string>
+    <string name="minutes">Minuutit: %1$s</string>
+    <string name="hours">Tunnit: %1$s</string>
+    <string name="start">Aloita</string>
+    <string name="stop">Lopeta</string>
+    <string name="formatKilo">%1$s km</string>
+    <string name="daySteps">Askeleet</string>
+    <string name="dayKilometers">Kilometrit</string>
+    <string name="dayCalories">Kalorit</string>
+</resources>
