@@ -9,14 +9,17 @@ import androidx.fragment.app.*
 
 
 class SavedFragment : Fragment(R.layout.fragment_saved) {
-    override fun onViewCreated(view: View, savedInstanceState:
-    Bundle?) {
+    override fun onViewCreated(
+        view: View, savedInstanceState:
+        Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
         val ump: RouteModel by viewModels()
         ump.getRoutes().observe(this) {
             recyclerView.adapter = RouteAdapter(it?.sortedBy { that ->
-                that.uid})
+                that.uid
+            })
         }
     }
 }

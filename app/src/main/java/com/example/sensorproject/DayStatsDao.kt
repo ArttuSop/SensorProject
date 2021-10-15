@@ -10,9 +10,8 @@ interface DayStatsDao {
     @Query("SELECT * FROM daystatsentity")
     fun getAllDays(): LiveData<List<DayStatsEntity>>
 
-        @Query("SELECT * FROM daystatsentity WHERE date = :dayIds")
-        fun loadAllByIds(dayIds: String): LiveData<List<DayStatsEntity>>
-
+    @Query("SELECT * FROM daystatsentity WHERE date = :dayIds")
+    fun loadAllByIds(dayIds: String): LiveData<List<DayStatsEntity>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

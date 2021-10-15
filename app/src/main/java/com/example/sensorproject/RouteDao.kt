@@ -6,15 +6,15 @@ import androidx.room.*
 @Dao
 interface RouteDao {
 
-        @Query("SELECT * FROM routeEntity")
-        fun getAll(): LiveData<List<RouteEntity>>
+    @Query("SELECT * FROM routeEntity")
+    fun getAll(): LiveData<List<RouteEntity>>
 
-        @Query("SELECT * FROM routeentity WHERE uid = :routeIds")
-        fun loadAllByIds(routeIds: Long): RouteContact
+    @Query("SELECT * FROM routeentity WHERE uid = :routeIds")
+    fun loadAllByIds(routeIds: Long): RouteContact
 
-        @Insert(onConflict = OnConflictStrategy.REPLACE)
-        fun insert(routesEntity: RouteEntity): Long
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(routesEntity: RouteEntity): Long
 
-        @Delete
-        fun delete(routeEntity: RouteEntity)
-    }
+    @Delete
+    fun delete(routeEntity: RouteEntity)
+}

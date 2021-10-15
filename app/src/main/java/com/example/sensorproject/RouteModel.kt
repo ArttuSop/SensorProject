@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
-class RouteModel(application: Application):
+class RouteModel(application: Application) :
     AndroidViewModel(application) {
 
     private val routes: LiveData<List<RouteEntity>> =

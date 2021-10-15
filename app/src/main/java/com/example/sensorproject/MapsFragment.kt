@@ -31,7 +31,9 @@ import kotlinx.coroutines.launch
 import com.google.android.gms.maps.SupportMapFragment
 import java.text.SimpleDateFormat
 import java.util.*
+
 import androidx.annotation.RequiresApi
+
 
 
 class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
@@ -53,7 +55,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     var stepsWalk = 0
     var kilometersWalk = 0.0
     var running = false
-    var myLocation = false
+    private var myLocation = false
     var getCurrentSteps = false
     private var sSteps: Sensor? = null
     private lateinit var sm: SensorManager
@@ -64,7 +66,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val rootView: View = inflater.inflate(R.layout.fragment_maps, container, false)
         bt = Button(activity)
         bt.setBackgroundColor(Color.parseColor("#1565C0"))
@@ -74,7 +76,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         //And now you can add the buttons you need, because it's a fragment, use getActivity() as context
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-        bt.setText("Start")
+        bt.text = getString(R.string.start)
 
         //You can add LayoutParams to put the button where you want it and the just add it
         rl.addView(bt, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -88,14 +90,14 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 running = true
                 getCurrentSteps = true
                 runTimer()
-                bt.text = "Stop"
+                bt.text = getString(R.string.stop)
             } else if (bt.text == "Stop") {
                 start = false
                 running = false
-                bt.text = "Start"
+                bt.text = getString(R.string.start)
                 Log.d("Seconds in stop", seconds.toString())
                 encodedPolyline = encode(polylineList)
-                val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+                val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
                 val currentDateTime = simpleDateFormat.format(Date())
                 val hours = seconds.toDouble() / 3600
                 Log.d("Hours in stop", hours.toString())
@@ -116,19 +118,21 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
     private fun runTimer() {
 
+        // Creates a new Handler
         val handler = Handler()
 
         handler.post(object : Runnable {
             override fun run() {
-                val hours: Int = seconds / 3600
-                val minutes: Int = seconds % 3600 / 60
-                val secs: Int = seconds % 60
 
+                // If running is true, increment the
+                // seconds variable.
                 if (running) {
                     seconds++
                     Log.d("Seconds", seconds.toString())
                 }
 
+                // Post the code again
+                // with a delay of 1 second.
                 handler.postDelayed(this, 1000)
             }
         })
@@ -188,7 +192,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap ?: return
+        map = googleMap
         polyline = map.addPolyline(PolylineOptions().add(LatLng(0.0, 0.0))) ?: return
         myLocation = true
         enableMyLocation()
@@ -207,7 +211,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             map.isMyLocationEnabled = true
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-            requestPermission(this, MapsFragment.LOCATION_PERMISSION_REQUEST_CODE,
+            requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                 Manifest.permission.ACCESS_FINE_LOCATION, true
             )
         }
@@ -231,9 +235,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             // Display the missing permission error dialog when the fragments resume.
             permissionDenied = true
         }
-    }
-    private fun showMissingPermissionError() {
-      PermissionUtils.PermissionDeniedDialog.newInstance(true).show(childFragmentManager, "dialog")
     }
 
     companion object {
