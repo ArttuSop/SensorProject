@@ -21,8 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.example.sensorproject.PermissionUtils.requestPermission
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -34,11 +32,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
-import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.example.sensorproject.fragments.WalkFragment
-import kotlinx.android.synthetic.main.fragment_walk.*
-import kotlinx.android.synthetic.main.fragment_walk.view.*
+
 
 
 class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
@@ -71,7 +66,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val rootView: View = inflater.inflate(R.layout.fragment_maps, container, false)
         bt = Button(activity)
         bt.setBackgroundColor(Color.parseColor("#1565C0"))
@@ -197,7 +192,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap ?: return
+        map = googleMap
         polyline = map.addPolyline(PolylineOptions().add(LatLng(0.0, 0.0))) ?: return
         myLocation = true
         enableMyLocation()
@@ -216,7 +211,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             map.isMyLocationEnabled = true
         } else {
             // Permission to access the location is missing. Show rationale and request permission
-            requestPermission(this, MapsFragment.LOCATION_PERMISSION_REQUEST_CODE,
+            requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
                 Manifest.permission.ACCESS_FINE_LOCATION, true
             )
         }
@@ -240,10 +235,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             // Display the missing permission error dialog when the fragments resume.
             permissionDenied = true
         }
-    }
-
-    private fun showMissingPermissionError() {
-      PermissionUtils.PermissionDeniedDialog.newInstance(true).show(childFragmentManager, "dialog")
     }
 
     companion object {

@@ -1,25 +1,26 @@
 package com.example.sensorproject
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import androidx.annotation.RequiresApi
 import com.example.sensorproject.fragments.WalkFragment
 import com.example.sensorproject.fragments.SavedFragment
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), /*OnMapReadyCallback,*/
-    ActivityCompat.OnRequestPermissionsResultCallback /*SavedFragment.RecyclerFragmentListener*/ {
+class MainActivity : AppCompatActivity(),
+    ActivityCompat.OnRequestPermissionsResultCallback  {
 
     private val walkFragment = WalkFragment()
     private val mapsFragment = MapsFragment()
     private val savedFragment = SavedFragment()
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,13 +42,12 @@ class MainActivity : AppCompatActivity(), /*OnMapReadyCallback,*/
     }
 
     private fun replaceFragment(fragment: Fragment){
-        if (fragment != null){
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.commit()
-        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun hasPermissions(): Boolean {
         if (checkSelfPermission(Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
             Log.d("DBG", "No activity recognition access")
@@ -56,9 +56,5 @@ class MainActivity : AppCompatActivity(), /*OnMapReadyCallback,*/
         }
         return true
     }
-    /*override fun onButtonClick(position: Int) {
 
-    }
-
-     */
 }

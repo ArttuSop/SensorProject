@@ -17,13 +17,21 @@ object PermissionUtils {
         activity: MapsFragment, requestId: Int,
         permission: String, finishActivity: Boolean
     ) {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity.requireActivity(), permission)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                activity.requireActivity(),
+                permission
+            )
+        ) {
             // Display a dialog with rationale.
             RationaleDialog.newInstance(requestId, finishActivity)
                 .show(activity.childFragmentManager, "dialog")
         } else {
             // Location permission has not been granted yet, request it.
-            ActivityCompat.requestPermissions(activity.requireActivity(), arrayOf(permission), requestId)
+            ActivityCompat.requestPermissions(
+                activity.requireActivity(),
+                arrayOf(permission),
+                requestId
+            )
         }
     }
 

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
-class DayStatsModel(application: Application):
+class DayStatsModel(application: Application) :
     AndroidViewModel(application) {
 
     private val days: LiveData<List<DayStatsEntity>> =
