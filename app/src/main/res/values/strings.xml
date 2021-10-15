@@ -14,4 +14,7 @@
     <string name="speed">Speed: %1$s kph</string>
     <string name="minutes">Minutes: %1$s</string>
     <string name="hours">Hours: %1$s</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="format">%1$s</string>
 </resources>

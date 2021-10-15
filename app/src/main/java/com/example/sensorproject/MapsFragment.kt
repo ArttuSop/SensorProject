@@ -95,14 +95,14 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 running = true
                 getCurrentSteps = true
                 runTimer()
-                bt.text = "Stop"
+                bt.text = getString(R.string.stop)
             } else if (bt.text == "Stop") {
                 start = false
                 running = false
-                bt.text = "Start"
+                bt.text = getString(R.string.start)
                 Log.d("Seconds in stop", seconds.toString())
                 encodedPolyline = encode(polylineList)
-                val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+                val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
                 val currentDateTime = simpleDateFormat.format(Date())
                 val hours = seconds.toDouble() / 3600
                 Log.d("Hours in stop", hours.toString())
@@ -114,13 +114,11 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 kilometersS = String.format("%.2f",kilometersDouble) + " km"
                 GlobalScope.launch {
                     db.routeDao().insert(RouteEntity(0, currentDateTime, kilometersS, encodedPolyline, avgSpeed.toString(), stepsRoute.toString(), hours.toString()))
-                    //RoutesModel.db = db
                 }
                 map.clear()
             }
         }
         return rootView
-        //return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     private fun runTimer() {
@@ -130,9 +128,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
         handler.post(object : Runnable {
             override fun run() {
-                val hours: Int = seconds / 3600
-                val minutes: Int = seconds % 3600 / 60
-                val secs: Int = seconds % 60
 
                 // If running is true, increment the
                 // seconds variable.

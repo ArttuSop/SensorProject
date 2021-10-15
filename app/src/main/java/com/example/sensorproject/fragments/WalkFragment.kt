@@ -47,7 +47,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
     var dateI = 0
     var currentDate = ""
     private val dayFragment = dayFragment()
-    var simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
+    var simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
     var currentDateTime = ""
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -232,8 +232,8 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.YEAR, year)
 
-        val viewFormatter = SimpleDateFormat("dd.MM.yyyy")
-        var viewFormattedDate = viewFormatter.format(calendar.getTime())
+        val viewFormatter = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+        val viewFormattedDate = viewFormatter.format(calendar.getTime())
         dateTv.setText(viewFormattedDate)
 
         val intent = Intent(this.requireContext(), dayFragment::class.java).apply {
