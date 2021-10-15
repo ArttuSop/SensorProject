@@ -26,16 +26,25 @@ import com.example.sensorproject.R
 import kotlinx.android.synthetic.main.fragment_walk.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.schedule
 
 const val Formatted = "formatted"
+internal const val PrevDate = "date.txt"
+internal const val PrevSteps = "steps.txt"
+internal const val CheckIfEmpty = "check.txt"
 class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, DateSelected {
 
     private val db by lazy { DayStatsDB.get(this.requireContext()) }
     private var sSteps: Sensor? = null
     private lateinit var sm: SensorManager
-    var currentSteps = 0
+    var reset = false
+    var dateI = 0
+    var currentDate = ""
     private val dayFragment = dayFragment()
     var simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
     var currentDateTime = ""
@@ -62,7 +71,6 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
     }
 
     fun getDate() {
-        //val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
         currentDateTime = simpleDateFormat.format(Date())
         dateTv.text = currentDateTime
     }
@@ -71,16 +79,74 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
-
-        if (currentDateTime != simpleDateFormat.format(Date())) {
-            //currentSteps = p0?.values?.get(0)?.toInt()!!
-            //reset = false
+        val prevSteps = requireContext().openFileInput(PrevSteps)?.bufferedReader().use {
+            it?.readText() ?: getString(R.string.read_file_steps)
         }
-        val stepVal = p0?.values?.get(0)
-        val stepsI = stepVal?.toInt()?.minus(currentSteps)
-        steps.text = stepsI.toString()
-        val kilometerInt = (stepsI?.times(0.0007))
-        kilometers.text = String.format("%.2f",kilometerInt) + " km"
+
+
+        if (reset) {
+            requireContext().openFileOutput(PrevSteps, Context.MODE_APPEND).use {
+                it.write("${p0?.values?.get(0).toString()}\n".toByteArray())
+            }
+
+            if (prevSteps.lines().size > 1) {
+                val steps = p0?.values?.get(0)?.toDouble()?.toInt()!! - prevSteps.lines().get(prevSteps.lines().lastIndex.minus(1)).toDouble().toInt()
+                val kilometerInt = steps.times(0.0007)
+                GlobalScope.launch {
+                    db.dayStatsDao().insert(
+                        DayStatsEntity(
+                            0,
+                            currentDate.lines().get(currentDate.lines().lastIndex.minus(1)),
+                            steps.toString(),
+                            String.format("%.2f", kilometerInt)
+                        )
+                    )
+                }
+            }else {
+                val kilometerInt = p0?.values?.get(0)?.times(0.0007)
+                GlobalScope.launch {
+                    db.dayStatsDao().insert(
+                        DayStatsEntity(
+                            0,
+                            currentDate.lines().get(currentDate.lines().lastIndex.minus(1)),
+                            p0?.values?.get(0)?.toInt().toString(),
+                            String.format("%.2f", kilometerInt)
+                        )
+                    )
+                }
+            }
+
+            reset = false
+        }
+
+
+        val check = requireContext().openFileInput(CheckIfEmpty)?.bufferedReader().use {
+            it?.readText() ?: getString(R.string.read_file_test)
+        }
+
+        if (check.lines().get(check.lines().lastIndex.minus(0)) == "0") {
+            val stepVal = p0?.values?.get(0)
+            val stepsI = stepVal?.toInt()?.minus(0)
+            steps.text = stepsI.toString()
+            val kilometerInt = (stepsI?.times(0.0007))
+            kilometers.text = String.format("%.2f", kilometerInt) + " km"
+        }else if (prevSteps.lines().size > 1){
+            val i = prevSteps.lines().lastIndex.minus(1)
+            val stepVal = p0?.values?.get(0)
+            val stepsI = stepVal?.toInt()?.minus(prevSteps.lines().get(i).toDouble().toInt())
+            steps.text = stepsI.toString()
+            val kilometerInt = (stepsI?.times(0.0007))
+            kilometers.text = String.format("%.2f", kilometerInt) + " km"
+        }else {
+            val prevSteps2 = requireContext().openFileInput(PrevSteps)?.bufferedReader().use {
+                it?.readText() ?: getString(R.string.read_file_steps)
+            }
+            val stepVal = p0?.values?.get(0)
+            val stepsI = stepVal?.toInt()?.minus(prevSteps2.toDouble().toInt())
+            steps.text = stepsI.toString()
+            val kilometerInt = (stepsI?.times(0.0007))
+            kilometers.text = String.format("%.2f", kilometerInt) + " km"
+        }
 
     }
 
@@ -88,6 +154,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         println("Accuracy changed")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onResume() {
         // Register a listener for the sensor.
         super.onResume()
@@ -96,7 +163,36 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         btnDatePlanted.setOnClickListener {
             showDatePicker()
         }
+        requireContext().openFileOutput(PrevDate, Context.MODE_APPEND).use {
 
+        }
+
+        requireContext().openFileOutput(PrevSteps, Context.MODE_APPEND).use {
+
+        }
+            currentDate = requireContext().openFileInput(PrevDate)?.bufferedReader().use {
+                it?.readText() ?: getString(R.string.read_file_date)
+            }
+
+            dateI = currentDate.lines().lastIndex.minus(1)
+
+        if (dateI == -1) {
+            requireContext().openFileOutput(PrevDate, Context.MODE_APPEND).use {
+                it.write("${simpleDateFormat.format(Date())}\n".toByteArray())
+            }
+            requireContext().openFileOutput(CheckIfEmpty, Context.MODE_APPEND).use {
+                it.write("0".toByteArray())
+            }
+        } else if (currentDate.lines().get(dateI) != simpleDateFormat.format(Date())) {
+            requireContext().openFileOutput(PrevDate, Context.MODE_APPEND).use {
+                it.write("${simpleDateFormat.format(Date())}\n".toByteArray())
+            }
+            Log.d("Date change", "Date change")
+            requireContext().openFileOutput(CheckIfEmpty, Context.MODE_APPEND).use {
+                it.write("1".toByteArray())
+            }
+            reset = true
+        }
     }
 
     override fun onPause() {
@@ -135,9 +231,7 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         val intent = Intent(this.requireContext(), dayFragment::class.java).apply {
             putExtra(Formatted, viewFormattedDate)
         }
-        GlobalScope.launch {
-            db.dayStatsDao().insert(DayStatsEntity(0, "13.10.2021", "1000", "6"))
-        }
+
         startActivity(intent)
     }
 }
