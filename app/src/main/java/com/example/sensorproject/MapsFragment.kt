@@ -60,7 +60,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     var stepsWalk = 0
     var kilometersWalk = 0.0
     var running = false
-    var myLocation = false
+    private var myLocation = false
     var getCurrentSteps = false
     private var sSteps: Sensor? = null
     private lateinit var sm: SensorManager
@@ -81,7 +81,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         //And now you can add the buttons you need, because it's a fragment, use getActivity() as context
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-        bt.setText("Start")
+        bt.text = getString(R.string.start)
 
         //You can add LayoutParams to put the button where you want it and the just add it
         rl.addView(bt, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -241,27 +241,6 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             permissionDenied = true
         }
     }
-
-
-
-   /* override fun onResume() {
-        super.onResume()
-        if (permissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError()
-            permissionDenied = false
-        }
-    }
-
-    */
-/*
-    override fun onDestroyView() {
-        super.onDestroyView()
-        val f = fragmentManager?.findFragmentById(R.id.map) as SupportMapFragment?
-        if (f != null) requireFragmentManager().beginTransaction().remove(f).commit()
-    }
-
- */
 
     private fun showMissingPermissionError() {
       PermissionUtils.PermissionDeniedDialog.newInstance(true).show(childFragmentManager, "dialog")

@@ -73,7 +73,7 @@ class RouteAdapter (private val items: List<RouteEntity>?) :
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(decodedPolyline[0].longitude, decodedPolyline[0].latitude), 10F))
-        for (i in 0..decodedPolyline.size - 1) {
+        for (i in decodedPolyline.indices) {
             map.addPolyline(
                 PolylineOptions().add(
                     LatLng(decodedPolyline[i].longitude, decodedPolyline[i].latitude),
