@@ -10,6 +10,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
+import android.os.Build
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -34,6 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.example.sensorproject.fragments.WalkFragment
 import kotlinx.android.synthetic.main.fragment_walk.*
 import kotlinx.android.synthetic.main.fragment_walk.view.*
@@ -64,6 +66,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     private lateinit var sm: SensorManager
     private var permissionDenied = false
     private val db by lazy { RouteDB.get(this.requireContext()) }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
