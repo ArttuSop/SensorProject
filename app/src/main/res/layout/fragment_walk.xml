@@ -9,9 +9,9 @@
 
     <TextView
         android:id="@+id/dateTv"
-        android:layout_width="172dp"
-        android:layout_height="51dp"
         android:fontFamily="@font/oswald"
+        android:layout_width="183dp"
+        android:layout_height="60dp"
         android:text="Date"
         android:textAlignment="center"
         android:textSize="35dp"
@@ -22,34 +22,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.029" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="380dp"
-        android:layout_height="11dp"
-        android:elevation="2dp"
-        android:max="300"
-        android:progressTint="#1565C0"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/steps"
-        android:layout_width="162dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
         android:drawableRight="@drawable/ic_walk"
         android:elevation="3dp"
         android:fontFamily="@font/open_sans"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.241" />
+        app:layout_constraintTop_toBottomOf="@+id/walk"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnDatePlanted"
@@ -72,30 +59,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/oswald"
-        android:text="Steps Today:"
+        android:layout_marginTop="50dp"
+        android:text="Steps:"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.14" />
+        app:layout_constraintTop_toBottomOf="@+id/dateTv"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/kilometers"
-        android:layout_width="162dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
         android:drawableRight="@drawable/ic_baseline_map_24"
         android:elevation="3dp"
         android:fontFamily="@font/open_sans"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintTop_toBottomOf="@+id/steps"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

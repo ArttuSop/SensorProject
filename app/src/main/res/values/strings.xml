@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">SensorProject</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">StepByStep</string>
+    <!-- All the Strings -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="location_permission_denied">Denied</string>
     <string name="permission_required_toast">Test</string>
@@ -11,7 +11,7 @@
     <string name="mapFragment">mapFragment</string>
     <string name="steps">Steps: %1$s</string>
     <string name="kilometers">Kilometers: %1$s</string>
-    <string name="speed">Speed: %1$s kph</string>
+    <string name="speed">Speed: %1$s km/h</string>
     <string name="minutes">Minutes: %1$s</string>
     <string name="hours">Hours: %1$s</string>
     <string name="start">Start</string>

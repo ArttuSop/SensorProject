@@ -23,7 +23,6 @@ import androidx.fragment.app.DialogFragment
 import com.example.sensorproject.DayStatsDB
 import com.example.sensorproject.DayStatsEntity
 import com.example.sensorproject.R
-import com.example.sensorproject.RouteDB
 import kotlinx.android.synthetic.main.fragment_walk.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -164,13 +163,6 @@ class WalkFragment : Fragment(R.layout.fragment_walk), SensorEventListener, Date
         btnDatePlanted.setOnClickListener {
             showDatePicker()
         }
-        /*progressBar.max = 300
-        if (steps.text.toString() != "") {
-            progressBar.progress =
-                (steps.text.toString().toInt() / 300) * 100
-        }
-
-         */
         requireContext().openFileOutput(PrevDate, Context.MODE_APPEND).use {
 
         }

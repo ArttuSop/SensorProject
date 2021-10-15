@@ -2,18 +2,11 @@ package com.example.sensorproject.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import com.example.sensorproject.*
 import kotlinx.android.synthetic.main.fragment_day.*
-import kotlinx.android.synthetic.main.fragment_saved.*
-import kotlinx.coroutines.GlobalScope
-import java.text.SimpleDateFormat
+import kotlinx.android.synthetic.main.fragment_walk.*
 
 class dayFragment : AppCompatActivity() {
     private val db by lazy { DayStatsDB.get(this) }
@@ -32,9 +25,13 @@ class dayFragment : AppCompatActivity() {
                 if (it[i].date.toString() == formattedDate) {
                     step.text = it[i].steps
                     km.text = it[i].kilometers
+                    var moi = it[i].kilometers!!.toInt().times(50)
+                    cal.text = moi.toString()
                 }
         }
         }
+
+
        Log.d("Values", values.value?.get(0)?.kilometers.toString())
 
             Log.d("Days", db.dayStatsDao().loadAllByIds(formattedDate.toString()).toString())
