@@ -85,13 +85,13 @@ class MapsFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         sSteps = sm.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         bt.setOnClickListener {
-            if (bt.text == "Start") {
+            if (bt.text == getString(R.string.start)) {
                 start = true
                 running = true
                 getCurrentSteps = true
                 runTimer()
                 bt.text = getString(R.string.stop)
-            } else if (bt.text == "Stop") {
+            } else if (bt.text == getString(R.string.stop)) {
                 start = false
                 running = false
                 bt.text = getString(R.string.start)
